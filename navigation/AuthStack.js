@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import {
@@ -11,17 +11,27 @@ import {
 
 const Stack = createNativeStackNavigator();
 const AuthStack = () => {
+  const [showOnBoard, setShowOnBoard] = useState(true);
+
+  const handleOnBoardFinish = () => {
+    setShowOnBoard(false);
+  };
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="OnBoarding" component={OnBoardingScreen} />
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{ animation: "fade" }}
-      />
-    </Stack.Navigator>
+    <>
+      {showOnBoard && <OnBoardingScreen handleDone={handleOnBoardFinish} />}
+
+      {!showOnBoard && (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{ animation: "fade" }}
+          />
+        </Stack.Navigator>
+      )}
+    </>
   );
 };
 
